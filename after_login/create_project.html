@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Project | PlanToday.com</title>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 30%;
+            margin: auto;
+            box-shadow: 0px 8px 24px 0 rgb(29 140 242 / 16%);
+            padding: 20px 30px;
+            border: 0.5px solid black;
+            border-radius: 20px;
+            font-size: 20px;
+        }
+
+        form>label:nth-child(1) {
+            font-weight: 800;
+            font-size: 28px;
+        }
+
+        form>label {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            align-items: center;
+            border: none;
+            padding: 15px 25px;
+            background-color: #5034ff;
+            color: white;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #7171de;
+            color: #F0F3FF;
+        }
+
+        #cont {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div id="cont">
+        <form action="">
+            <label>Create Project</label>
+            <label for="name">Project Name :</label>
+            <input type="text" id="name" placeholder="Assignment Schedule">
+            <label for="email">Description</label>
+            <input type="text" id="des" placeholder="For Study Purpose">
+            <input type="submit" value="Create Project">
+        </form>
+    </div>
+</body>
+
+</html>
+
+<script>
+    let form = document.querySelector("form");
+    form.addEventListener("submit", saveData);
+
+    let cur_project = JSON.parse(localStorage.getItem("cur-projects")) || [];
+    function saveData() {
+        let objData = {
+            name: form.name.value,
+            des: form.des.value,
+        };
+        if(objData.name=="" || objData.des==""){
+            alert("Please fill basic info about info to continue.");
+            return 0;
+        }
+        let contains=false;
+        for(let i=0; i<cur_project.length; i++){
+            if(cur_project[i].name==objData.name){
+                contains=true;
+            }
+        }
+        if(contains){
+            alert("Project name already exists");
+        } else {
+            let new_arr=[];
+            cur_project.push(objData);
+            localStorage.setItem("cur-projects", JSON.stringify(cur_project));
+            localStorage.setItem(objData.name, JSON.stringify(new_arr))
+            window.open("./projects.html")
+        }
+    }
+</script>

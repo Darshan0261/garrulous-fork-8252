@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Item | PlanToday.com</title>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 30%;
+            margin: auto;
+            box-shadow: 0px 8px 24px 0 rgb(29 140 242 / 16%);
+            padding: 20px 30px;
+            border: 0.5px solid black;
+            border-radius: 20px;
+            font-size: 20px;
+        }
+
+        form>label:nth-child(1) {
+            font-weight: 800;
+            font-size: 28px;
+        }
+
+        form>label {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        input,select {
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            align-items: center;
+            border: none;
+            padding: 15px 25px;
+            background-color: #5034ff;
+            color: white;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #7171de;
+            color: #F0F3FF;
+        }
+
+        #cont {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div id="cont">
+        <form action="">
+            <label>Create Item</label>
+            <label for="name">Item Name :</label>
+            <input type="text" id="name" placeholder="WEB101 Assignment No. 1">
+            <label for="status">Status :</label>
+            <select name="status" id="status">
+                <option value="">Select</option>
+                <option value="Working on it">Working on it</option>
+                <option value="Stuck">Stuck</option>
+                <option value="Done">Done</option>
+            </select>
+            <label for="date">Date :</label>
+            <input type="date" name="date" id="date">
+            <input type="submit" value="Create Item">
+        </form>
+    </div>
+</body>
+
+</html>
+
+<script>
+    let form = document.querySelector("form");
+    form.addEventListener("submit", saveData);
+
+    let active_project_name=localStorage.getItem("active-project-name");
+    
+    let active_project=JSON.parse(localStorage.getItem(active_project_name)) || [];
+
+    console.log(active_project)
+
+    function saveData(event) {
+        event.preventDefault();
+        let objData = {
+            name: form.name.value,
+            status: form.status.value,
+            date: form.date.value,
+        };
+        
+        active_project.push(objData);
+
+        localStorage.setItem(active_project_name, JSON.stringify(active_project))
+        
+    }
+</script>

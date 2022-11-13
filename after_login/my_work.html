@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects Page | A new way of working</title>
+    <style>
+        * {
+            font-family: sofia-pro, Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        #nav {
+            height: 80px;
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            background-color: white;
+            position: fixed;
+            top: 0;
+        }
+
+        .main {
+            margin-top: 80px;
+        }
+
+        #nav>div>img {
+            height: 100%;
+        }
+
+        #nav>div {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        #nav>div>button {
+            align-items: center;
+            border: none;
+            padding: 15px 25px;
+            background-color: white;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        #nav>div:nth-child(5)>button,
+        #create-item {
+            align-items: center;
+            border: none;
+            padding: 15px 25px;
+            background-color: #5034ff;
+            color: white;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        #nav>div:nth-child(5)>button:hover,
+        #create-item:hover {
+            color: white;
+            background-color: #7171de;
+        }
+
+        #nav>div>button:hover {
+            background-color: #F0F3FF;
+            color: #5034FF;
+        }
+
+        #nav {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        #cont-head>div,
+        #cont-body>div {
+            display: flex;
+            width: 80%;
+            margin: auto;
+            justify-content: space-evenly;
+        }
+
+        #cont-head>div>div,
+        #cont-body>div>div {
+            border: 1px solid white;
+            width: 20%;
+            padding: 20px 0;
+            text-align: center;
+            background-color: #5034FF;
+            color: white;
+        }
+
+        /* #cont-head>div>div:hover,
+        #cont-body>div>div:hover {
+            background-color: #7171de;
+        } */
+
+        input,
+        select {
+            border: none;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #5034FF;
+            color: white;
+            height: max-content;
+            font-size: 16px;
+        }
+
+        /* input:hover,
+        select:hover{
+            background-color: #7171de;
+        } */
+
+        input[type="date"]::-webkit-inner-spin-button,
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        select,
+        input[type="date"],
+        #cont-body>div>div:nth-child(5) {
+            cursor: pointer;
+        }
+
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #create-item{
+            display: block;
+            margin-left: 150px;
+            margin-top: 130px;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="nav">
+
+        <img src="../PlanToday Logo.png" alt="Plan Today Logo">
+        <div>
+            <button onclick="window.location.href='projects.html'">Projects</button>
+        </div>
+        <div>
+            <button onclick="window.location.href='my_work.html'">My Work</button>
+        </div>
+        <div>
+            <button onclick="window.location.href='favorites.html'">Favorites</button>
+        </div>
+        <div>
+            <button id="logout">Logout</button>
+        </div>
+    </div>
+    <div class="main">
+        <button id="create-item">Create Item</button>
+        <div id="cont-head">
+            <div>
+                <div>Sr No</div>
+                <div>Item Name</div>
+                <div>Status</div>
+                <div>Date</div>
+                <div>Remove Item</div>
+            </div>
+        </div>
+        <div id="cont-body"></div>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    document.querySelector("#create-item").addEventListener("click", function () {
+        let objData = {
+            name: "Item ",
+            status: "Working on it",
+            date: "yyyy/mm/dd"
+        };
+        active_project.push(objData);
+        localStorage.setItem(active_project_name, JSON.stringify(active_project));
+        displayTable(active_project)
+    })
+
+    document.querySelector("#logout").addEventListener("click", function(){
+        login_status=false;
+        localStorage.setItem("login-status", JSON.stringify(login_status));
+        window.open("../index.html", "_self")
+    })
+
+    let active_project_name = localStorage.getItem("active-project-name");
+
+    let active_project = JSON.parse(localStorage.getItem(active_project_name)) || [];
+
+    function displayTable(arr) {
+        document.querySelector("#cont-body").innerText = null;
+        arr.forEach((ele, index) => {
+            let div = document.createElement("div");
+            let srno = document.createElement("div");
+            srno.innerText = index + 1;
+            let name = document.createElement("div");
+            let input1 = document.createElement("input");
+            input1.value = ele.name;
+            input1.addEventListener("input", function () {
+                ele.name = input1.value;
+                localStorage.setItem(active_project_name, JSON.stringify(active_project));
+            })
+            name.append(input1)
+            let status = document.createElement("div");
+            let input2 = document.createElement("select");
+            // let option1=document.createElement("option");
+            // option1.value="";
+            // option1.innerText="Select";
+            if (ele.status == "Done") {
+                let option2 = document.createElement("option");
+                option2.value = "Done";
+                option2.innerText = "Done";
+                let option3 = document.createElement("option");
+                option3.value = "Working on it";
+                option3.innerText = "Working on it";
+                let option4 = document.createElement("option");
+                option4.value = "Stuck";
+                option4.innerText = "Stuck";
+                input2.option = ele.status;
+                input2.append(option2, option3, option4)
+            } else if (ele.status == "Working on it") {
+                let option3 = document.createElement("option");
+                option3.value = "Done";
+                option3.innerText = "Done";
+                let option2 = document.createElement("option");
+                option2.value = "Working on it";
+                option2.innerText = "Working on it";
+                let option4 = document.createElement("option");
+                option4.value = "Stuck";
+                option4.innerText = "Stuck";
+                input2.option = ele.status;
+                input2.append(option2, option3, option4)
+            } else {
+                let option4 = document.createElement("option");
+                option4.value = "Done";
+                option4.innerText = "Done";
+                let option3 = document.createElement("option");
+                option3.value = "Working on it";
+                option3.innerText = "Working on it";
+                let option2 = document.createElement("option");
+                option2.value = "Stuck";
+                option2.innerText = "Stuck";
+                input2.option = ele.status;
+                input2.append(option2, option3, option4)
+            }
+            input2.addEventListener("change", function () {
+                ele.status = input2.value;
+                localStorage.setItem(active_project_name, JSON.stringify(active_project));
+            })
+            status.append(input2)
+            let date = document.createElement("div");
+            let input3 = document.createElement("input");
+            input3.type = "date";
+            input3.addEventListener("change", function () {
+                ele.date = input3.value;
+                localStorage.setItem(active_project_name, JSON.stringify(active_project));
+            })
+            input3.value = ele.date;
+            date.append(input3)
+            let del = document.createElement("div");
+            del.innerText = "Delete";
+            del.addEventListener("click", function () {
+                active_project.splice(index, 1);
+                localStorage.setItem(active_project_name, JSON.stringify(active_project));
+                displayTable(active_project)
+            })
+            document.querySelector("#cont-body").append(div);
+            div.append(srno, name, status, date, del)
+        });
+    }
+    displayTable(active_project)
+</script>

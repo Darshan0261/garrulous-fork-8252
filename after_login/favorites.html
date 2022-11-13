@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorites Page | A new way of working</title>
+    <style>
+        * {
+            font-family: sofia-pro, Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        #nav {
+            height: 80px;
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            background-color: white;
+            position: fixed;
+            top: 0;
+        }
+
+        .main {
+            margin-top: 80px;
+        }
+
+        #nav>div>img {
+            height: 100%;
+        }
+
+        #nav>div {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        #nav>div>button {
+            align-items: center;
+            border: none;
+            padding: 15px 25px;
+            background-color: white;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        #nav>div:nth-child(5)>button,
+        #create-project {
+            align-items: center;
+            border: none;
+            padding: 15px 25px;
+            background-color: #5034ff;
+            color: white;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        #nav>div:nth-child(5)>button:hover,
+        #create-project:hover {
+            color: white;
+            background-color: #7171de;
+        }
+
+        #nav>div>button:hover {
+            background-color: #F0F3FF;
+            color: #5034FF;
+        }
+
+        #nav {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 60%;
+            margin: auto;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        table td,
+        table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #8caacf;
+        }
+
+        table tr:hover {
+            background-color: #ddd;
+        }
+
+        table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #0468aa;
+            color: white;
+            text-align: center;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #cont-head {
+            margin-top: 150px;
+        }
+
+        #cont-head>div,
+        #cont-body>div {
+            display: flex;
+            width: 80%;
+            margin: auto;
+            justify-content: space-evenly;
+        }
+
+        #cont-head>div>div,
+        #cont-body>div>div {
+            border: 1px solid white;
+            width: 25%;
+            padding: 20px 0;
+            text-align: center;
+            background-color: #5034FF;
+            color: white;
+        }
+
+        #cont-body>div>div:nth-child(4){
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="nav">
+
+        <img src="../PlanToday Logo.png" alt="Plan Today Logo">
+        <div>
+            <button onclick="window.location.href='projects.html'">Projects</button>
+        </div>
+        <div>
+            <button onclick="window.location.href='my_work.html'">My Work</button>
+        </div>
+        <div>
+            <button onclick="window.location.href='favorites.html'">Favorites</button>
+        </div>
+        <div>
+            <button id="logout">Logout</button>
+        </div>
+    </div>
+    <div class="main">
+        <div id="cont-head">
+            <div>
+                <div>Sr No</div>
+                <div>Project Name</div>
+                <div>Description</div>
+                <div>Remove from Fav</div>
+            </div>
+        </div>
+        <div id="cont-body">
+
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    let fav_project = JSON.parse(localStorage.getItem("fav-projects"));
+
+    document.querySelector("#logout").addEventListener("click", function () {
+        login_status = false;
+        localStorage.setItem("login-status", JSON.stringify(login_status));
+        window.open("../index.html", "_self")
+    })
+
+    displayTable(fav_project);
+    function displayTable(data) {
+        document.querySelector("#cont-body").innerText = null;
+        data.forEach((ele, index) => {
+            let row = document.createElement("div");
+            let srno = document.createElement("div");
+            srno.innerText = index + 1;
+            let name = document.createElement("div");
+            name.innerText = ele.name;
+            let des = document.createElement("div");
+            des.innerText = ele.des;
+            let del = document.createElement("div");
+            del.innerText = "Remove";
+            del.addEventListener("click", () => {
+                fav_project.splice(index, 1);
+                localStorage.setItem("fav-projects", JSON.stringify(fav_project));
+                displayTable(fav_project)
+            })
+            document.querySelector("#cont-body").append(row);
+            row.append(srno, name, des, del)
+        });
+    } 
+</script>
